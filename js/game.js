@@ -16,6 +16,7 @@ class Game {
     this.height = 600;
     this.width = 500;
     this.obstacles = [];
+    this.cookies = []; // cookies array
     this.score = 0;
     this.lives = 3;
     this.gameIsOver = false;
@@ -23,14 +24,9 @@ class Game {
     this.gameLoopFrequency = Math.round(1000 / 60);
 
     // Get references to the score and lives display elements
-
     this.scoreElement = document.getElementById("score");
     this.livesElement = document.getElementById("lives");
-
-    //
   }
-
-  //
 
   start() {
     this.gameScreen.style.height = `${this.height}px`;
@@ -40,10 +36,9 @@ class Game {
 
     this.gameScreen.style.display = "block";
 
-    // Initialize the display with current values
+    // Initialize the score and lives display
     this.updateScoreDisplay();
     this.updateLivesDisplay();
-    //
 
     this.gameIntervalId = setInterval(() => {
       this.gameLoop();
@@ -61,6 +56,7 @@ class Game {
   update() {
     this.player.move();
 
+    // obstacles
     for (let i = 0; i < this.obstacles.length; i++) {
       const obstacle = this.obstacles[i];
       obstacle.move();
@@ -69,17 +65,34 @@ class Game {
         obstacle.element.remove();
         this.obstacles.splice(i, 1);
         this.lives--;
-
         this.updateLivesDisplay(); // Update lives display when lives decrease
-
         i--;
       } else if (obstacle.top > this.height) {
         this.score++;
-
         this.updateScoreDisplay(); // Update score display when score increases
-
         obstacle.element.remove();
         this.obstacles.splice(i, 1);
+        i--;
+      }
+    }
+
+    // introducing cookies
+    for (let i = 0; i < this.cookies.length; i++) {
+      const cookie = this.cookies[i];
+      cookie.move();
+
+      if (this.player.didCollide(cookie)) {
+        cookie.element.remove();
+        this.cookies.splice(i, 1);
+        this.lives++; // Extra HP for collecting cookie
+        this.score++; // Bonus points for collecting cookie
+        this.updateLivesDisplay();
+        this.updateScoreDisplay();
+        i--;
+      } else if (cookie.top > this.height) {
+        // Cookie passed by without collection - no effect on lives or score
+        cookie.element.remove();
+        this.cookies.splice(i, 1);
         i--;
       }
     }
@@ -88,13 +101,18 @@ class Game {
       this.endGame();
     }
 
+    // drop obstacles
     if (Math.random() > 0.98 && this.obstacles.length < 1) {
       this.obstacles.push(new Obstacle(this.gameScreen));
     }
+
+    // drop cookies
+    if (Math.random() > 0.995 && this.cookies.length < 1) {
+      this.cookies.push(new Cookie(this.gameScreen));
+    }
   }
 
-  //
-
+  // Update score and lives counter in UI
   updateScoreDisplay() {
     this.scoreElement.textContent = this.score;
   }
@@ -103,11 +121,10 @@ class Game {
     this.livesElement.textContent = this.lives;
   }
 
-  //
-
   endGame() {
     this.player.element.remove();
     this.obstacles.forEach((obstacle) => obstacle.element.remove());
+    this.cookies.forEach((cookie) => cookie.element.remove());
 
     this.gameIsOver = true;
 

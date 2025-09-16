@@ -1,13 +1,13 @@
-class Obstacle {
+class Cookie {
   constructor(gameScreen) {
     this.gameScreen = gameScreen;
     this.left = Math.floor(Math.random() * 300 + 70);
     this.top = 0;
-    this.width = 100;
-    this.height = 150;
+    this.width = 80;
+    this.height = 80;
     this.element = document.createElement("img");
 
-    this.element.src = "./assets/redCar.png";
+    this.element.src = "./assets/cookie.png";
     this.element.style.position = "absolute";
     this.element.style.width = `${this.width}px`;
     this.element.style.height = `${this.height}px`;
