@@ -1,0 +1,81 @@
+body {
+  padding: 0;
+  text-align: center;
+  font-family: "Verdana";
+}
+
+/*  styling font here gobally bc below tags werent working  */
+
+#game-intro {
+  padding: 20px 0px;
+}
+
+#game-container {
+  display: flex;
+  width: 100vw;
+  padding: 20px 0px;
+  justify-content: center;
+}
+
+#game-screen {
+  display: none;
+  border-radius: 10px;
+  align-content: center;
+  padding: 20px 0px;
+  overflow: hidden;
+  position: relative;
+  background-image: url(../assets/road.png);
+  background-size: cover;
+  animation: slide 8s linear infinite;
+}
+
+@keyframes slide {
+  0% {
+    background-position: 0 -1000px;
+  }
+  95% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 50px;
+  }
+}
+
+#game-end {
+  display: none;
+}
+
+#stats  {
+    padding-right: 30px;
+}
+
+/* 
+
+THIS IS DOING NOTHING:
+
+.game-intro p {
+  font-size: 18px;
+  font-family: "Verdana";
+
+} 
+BE SURE TO STYLE FONTS IN BODY TAG
+*/
+
+.logo-img {
+  width: 350px;
+}
+
+.arrows-img {
+  width: 150px;
+}
+
+body button {
+  font-size: 30px;
+  background-color: #870007;
+  color: #fff;
+  padding: 20px 40px;
+  border: 0;
+  box-shadow: 0;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
