@@ -28,7 +28,7 @@ window.onload = function () {
           game.player.directionX = 5;
           break;
         case "ArrowDown":
-          game.player.directionY = 2;
+          game.player.directionY = 6;
           break;
       }
     }

@@ -4,6 +4,17 @@ body {
   font-family: "Verdana";
 }
 
+body button {
+  font-size: 30px;
+  background-color: #f9493f;
+  color: #fff;
+  padding: 20px 40px;
+  border: 0;
+  box-shadow: 0;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
 /*  styling font here gobally bc below tags werent working  */
 
 #game-intro {
@@ -12,21 +23,24 @@ body {
 
 #game-container {
   display: flex;
+  flex-direction: column;
+  justify-items: center;
   width: 100vw;
-  padding: 20px 0px;
+  padding: 0px 0px;
   justify-content: center;
 }
 
 #game-screen {
   display: none;
+  align-self: center;
   border-radius: 10px;
   align-content: center;
-  padding: 20px 0px;
+  padding: 0px 0px;
   overflow: hidden;
   position: relative;
   background-image: url(../assets/road.png);
   background-size: cover;
-  animation: slide 8s linear infinite;
+  animation: slide 2.67s linear infinite;
 }
 
 @keyframes slide {
@@ -46,17 +60,24 @@ body {
 }
 
 #stats {
+  display: none;
+  padding-left: 30px;
   padding-right: 30px;
+  align-self: center;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  background-color: aquamarine;
+  width: 450px;
+  margin-bottom: 10px;
+  gap: 20px;
 }
 
 /* 
-
 THIS IS DOING NOTHING:
-
 .game-intro p {
   font-size: 18px;
   font-family: "Verdana";
-
 } 
 BE SURE TO STYLE FONTS IN BODY TAG
 */
@@ -65,17 +86,29 @@ BE SURE TO STYLE FONTS IN BODY TAG
   width: 350px;
 }
 
+.alt-logo-img {
+  width: 350px;
+}
+
 .arrows-img {
   width: 150px;
 }
 
-body button {
-  font-size: 30px;
-  background-color: #870007;
-  color: #fff;
-  padding: 20px 40px;
-  border: 0;
-  box-shadow: 0;
-  border-radius: 5px;
-  margin-bottom: 20px;
+.pizza-life {
+  font-size: 24px;
+  display: inline-block;
+  margin-right: 2px;
+}
+
+.pizza-life.flashing {
+  animation: flash 0.4s infinite alternate;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
 }

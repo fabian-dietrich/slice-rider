@@ -2,7 +2,7 @@ class Obstacle {
   constructor(gameScreen) {
     this.gameScreen = gameScreen;
     this.left = Math.floor(Math.random() * 300 + 70);
-    this.top = 0;
+    this.top = -150;
     this.width = 100;
     this.height = 150;
     this.element = document.createElement("img");
@@ -14,6 +14,10 @@ class Obstacle {
     this.element.style.left = `${this.left}px`;
     this.element.style.top = `${this.top}px`;
 
+    this.cleared = false; // update logic so point is scored as soon as obstacle is cleared by player, not when obstacle has disappeared from gameScreen
+
+    this.element.style.zIndex = "2";
+
     this.gameScreen.appendChild(this.element);
   }
 
@@ -23,7 +27,7 @@ class Obstacle {
   }
 
   move() {
-    this.top += 3;
+    this.top += 6;
     this.updatePosition();
   }
 }
