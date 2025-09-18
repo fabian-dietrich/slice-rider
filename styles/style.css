@@ -1,14 +1,20 @@
 body {
   padding: 0;
+  color: #3A3A3A;
   text-align: center;
-  font-family: "Verdana";
+  font-family: "Jersey 10";
+  font-size: 1.5em;
+  background-image: url(../assets/bg.png);
+  background-repeat: repeat;
+  background-size: 50px;
 }
 
 body button {
-  font-size: 30px;
+  font-family: "Jersey 10";
+  font-size: 1.5em;
   background-color: #f9493f;
   color: #fff;
-  padding: 20px 40px;
+  padding: 20px 120px;
   border: 0;
   box-shadow: 0;
   border-radius: 5px;
@@ -18,14 +24,51 @@ body button {
 /*  styling font here gobally bc below tags werent working  */
 
 #game-intro {
-  padding: 20px 0px;
+  padding: 20px 40px;
+  margin-top: 60px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 420px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+#game-end {
+  display: none;
+
+  padding: 20px 40px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 420px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+#stats {
+  display: none;
+  padding-left: 40px;
+  padding-right: 40px;
+  align-self: center;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #9C899F;
+  width: 420px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  margin-bottom: 10px;
+  /* gap: 20px; */
 }
 
 #game-container {
+  /*padding: 20px 40px;*/
   display: flex;
   flex-direction: column;
   justify-items: center;
-  width: 100vw;
+  width: 500;
   padding: 0px 0px;
   justify-content: center;
 }
@@ -33,7 +76,7 @@ body button {
 #game-screen {
   display: none;
   align-self: center;
-  border-radius: 10px;
+  border-radius: 5px;
   align-content: center;
   padding: 0px 0px;
   overflow: hidden;
@@ -55,24 +98,6 @@ body button {
   }
 }
 
-#game-end {
-  display: none;
-}
-
-#stats {
-  display: none;
-  padding-left: 30px;
-  padding-right: 30px;
-  align-self: center;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 10px;
-  background-color: aquamarine;
-  width: 450px;
-  margin-bottom: 10px;
-  gap: 20px;
-}
-
 /* 
 THIS IS DOING NOTHING:
 .game-intro p {
@@ -82,12 +107,20 @@ THIS IS DOING NOTHING:
 BE SURE TO STYLE FONTS IN BODY TAG
 */
 
+.jersey-10-regular {
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .logo-img {
-  width: 350px;
+  width: 400px;
+  margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 .alt-logo-img {
-  width: 350px;
+  width: 250px;
 }
 
 .arrows-img {

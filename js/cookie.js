@@ -3,9 +3,9 @@ class Cookie {
     this.gameScreen = gameScreen;
     this.game = game;
     this.left = Math.floor(Math.random() * 300 + 70);
-    this.top = -80;
-    this.width = 80;
-    this.height = 80;
+    this.top = -40;
+    this.width = 40;
+    this.height = 40;
     this.element = document.createElement("img");
 
     this.element.src = "assets/cookie.png";
@@ -26,7 +26,7 @@ class Cookie {
   }
 
   move() {
-    //   this.top += this.game.cookieSpeed;
+    //   this.top += this.game.cookieSpeed; / doesn't seem to be taking this value from game JS?
     this.top += 7;
     this.updatePosition();
   }

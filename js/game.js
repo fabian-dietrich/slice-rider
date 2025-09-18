@@ -24,9 +24,8 @@ class Game {
     this.gameIntervalId;
     this.gameLoopFrequency = Math.round(1000 / 60);
 
-
     // LINE BELOW: this.CookiesSpeed does not appear to be referenced consistently so it is hard coded to 9 px/frame in cookie.js
-   // this.cookieSpeed = 9; // same as background when CSS set to 2.67s linear infinite (stationary appearance)
+    // this.cookieSpeed = 9; // same as background when CSS set to 2.67s linear infinite (stationary appearance)
     this.obstacleSpeed = 4.5; // slower than background (traffic moving in same direction)
 
     // get references to score, timer and lives display elements
@@ -127,7 +126,7 @@ class Game {
         //
         this.updateScoreDisplay();
         i--;
-      } else if (cookie.top > this.height + 80) {
+      } else if (cookie.top > this.height + 40) {
         // cookie missed, no points
         cookie.element.remove();
         this.cookies.splice(i, 1);
