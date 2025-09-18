@@ -20,7 +20,7 @@ class Player {
     this.element.style.left = `${left}px`;
     this.element.style.top = `${top}px`;
 
-    // Add smooth transition for rotation
+    // addd smooth transition on rotation
     this.element.style.transition = "transform 0.2s ease-out";
     this.element.style.transformOrigin = "center center";
     //

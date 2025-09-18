@@ -14,10 +14,15 @@
         <br />
 
         <p>
-          Zoom past those other delivery riders using the ⬅️ and ➡️ arrow
-          keys,<br />accelerate with ⬆️ and brake (if you must 😒) with the ⬇️
-          key.
+          Zoom past the other delivery riders using the ⬅️ and ➡️ keys,<br />accelerate
+          with ⬆️ and brake (if you must 😒) with the ⬇️ key.
         </p>
+
+        <p>...</p>
+
+        <p>💥 Collisions = BAD ⚠️ Cookies = GOOD 🍪</p>
+
+        <p>...</p>
 
         <button id="start-button">🍕 Start Game</button>
       </div>
@@ -25,8 +30,9 @@
       <div id="game-container">
         <div id="stats">
           <!--  <h2>Stats</h2>  -->
-          <p>score: <span id="score">0</span></p>
-          <p><span id="life-slices">3</span></p>
+          <p>score: <span id="score"></span></p>
+          <p><span id="timer">00:00</span></p>
+          <p><span id="life-slices"></span></p>
         </div>
 
         <div id="game-screen"></div>
@@ -35,6 +41,7 @@
       <div id="game-end">
         <img src="./assets/alt-logo.png" alt="" class="alt-logo-img" />
         <h1>Game Over</h1>
+        <p>too easy?</p>
         <br />
         <button id="restart-button">🏁 Restart Game</button>
       </div>

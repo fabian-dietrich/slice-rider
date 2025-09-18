@@ -6,11 +6,11 @@ class Game {
 
     this.player = new Player(
       this.gameScreen,
-      200,
+      217,
       500,
-      100,
+      65,
       150,
-      "./assets/hero.png"
+      "assets/hero.png"
     );
 
     this.height = 600;
@@ -24,17 +24,20 @@ class Game {
     this.gameIntervalId;
     this.gameLoopFrequency = Math.round(1000 / 60);
 
-    // USE IN CASE I WANT TO INCREASE SPEED DYNAMICALLY
 
-    // this.backgroundSpeed = 6; // pixels per frame (base speed)
-    // this.cookieSpeed = 6; // same as background (stationary appearance)
-    // this.obstacleSpeed = 3.6; // slower than background (traffic moving in same direction)
+    // LINE BELOW: this.CookiesSpeed does not appear to be referenced consistently so it is hard coded to 9 px/frame in cookie.js
+   // this.cookieSpeed = 9; // same as background when CSS set to 2.67s linear infinite (stationary appearance)
+    this.obstacleSpeed = 4.5; // slower than background (traffic moving in same direction)
 
-    //
-
-    // Get references to the score and lives display elements
+    // get references to score, timer and lives display elements
     this.scoreElement = document.getElementById("score");
+    this.timerElement = document.getElementById("timer");
     this.livesElement = document.getElementById("life-slices"); // update to adopt pizza slice lives dynamic
+
+    this.gameStartTime = null;
+    this.difficultyLevel = 0;
+    this.baseObstacleRate = 0.98; // initial obstacle spawn rate
+    this.baseCookieRate = 0.995;
   }
 
   start() {
@@ -47,9 +50,11 @@ class Game {
 
     document.getElementById("stats").style.display = "flex";
 
-    // Initialize the score and lives display
+    // init score and lives display
     this.updateScoreDisplay();
     this.updateLivesDisplay();
+
+    this.gameStartTime = Date.now(); // record when game started to show countdown timer
 
     this.gameIntervalId = setInterval(() => {
       this.gameLoop();
@@ -58,6 +63,8 @@ class Game {
 
   gameLoop() {
     this.update();
+
+    this.updateTimerDisplay();
 
     if (this.gameIsOver) {
       clearInterval(this.gameIntervalId);
@@ -89,11 +96,12 @@ class Game {
         obstacle.element.remove();
         this.obstacles.splice(i, 1);
         this.lives--;
-        this.updateLivesDisplay(); // Update lives display when lives decrease
+        this.updateLivesDisplay(); // update lives display when lives decrease
         i--;
       } else if (obstacle.top > this.height + 150) {
         this.score++;
-        this.updateScoreDisplay(); // Update score display when score increases
+        // update score display when score increases:
+        this.updateScoreDisplay();
         obstacle.element.remove();
         this.obstacles.splice(i, 1);
         i--;
@@ -120,7 +128,7 @@ class Game {
         this.updateScoreDisplay();
         i--;
       } else if (cookie.top > this.height + 80) {
-        // Cookie passed by without collection - no effect on lives or score
+        // cookie missed, no points
         cookie.element.remove();
         this.cookies.splice(i, 1);
         i--;
@@ -131,14 +139,58 @@ class Game {
       this.endGame();
     }
 
+    // commenting out to try new complicated game logic increasing spawn rat eover time
+
     // drop obstacles
-    if (Math.random() > 0.98 && this.obstacles.length < 1) {
-      this.obstacles.push(new Obstacle(this.gameScreen));
+    // if (Math.random() > 0.98 && this.obstacles.length < 1) {
+    //   this.obstacles.push(new Obstacle(this.gameScreen, this));
+    // }
+
+    // drop cookies
+    // if (Math.random() > 0.995 && this.cookies.length < 1) {
+    //   this.cookies.push(new Cookie(this.gameScreen, this));
+    // }
+
+    //
+
+    // Calculate current difficulty level (increases every 30 seconds)
+    const currentTime = Date.now();
+    const elapsedSeconds = (currentTime - this.gameStartTime) / 1000;
+    this.difficultyLevel = Math.floor(elapsedSeconds / 10);
+
+    // Increase spawn rates based on difficulty level (gets harder over 3 minutes)
+    const obstacleRate = Math.max(
+      0.7,
+      this.baseObstacleRate - this.difficultyLevel * 0.15
+    );
+    const cookieRate = Math.max(
+      0.98,
+      this.baseCookieRate - this.difficultyLevel * 0.001
+    );
+
+    // drop obstacles (with collision checking)
+    if (Math.random() > obstacleRate && this.obstacles.length < 3) {
+      let attempts = 0;
+      let validPosition = false;
+
+      while (attempts < 10 && !validPosition) {
+        const newLeft = Math.floor(Math.random() * 300 + 70);
+        const newWidth = 65;
+
+        if (this.isPositionClear(newLeft, newWidth)) {
+          this.obstacles.push(new Obstacle(this.gameScreen, this));
+          // Update obstacle's position to safe position
+          this.obstacles[this.obstacles.length - 1].left = newLeft;
+          this.obstacles[this.obstacles.length - 1].updatePosition();
+          validPosition = true;
+        }
+        attempts++;
+      }
     }
 
     // drop cookies
-    if (Math.random() > 0.995 && this.cookies.length < 1) {
-      this.cookies.push(new Cookie(this.gameScreen));
+    if (Math.random() > cookieRate && this.cookies.length < 1) {
+      this.cookies.push(new Cookie(this.gameScreen, this));
     }
   }
 
@@ -180,10 +232,47 @@ class Game {
 
     // Make the score bigger and center it
     const scoreElement = document.getElementById("score").parentElement;
-    scoreElement.style.fontSize = "2em";
-    scoreElement.style.textAlign = "center";
+    scoreElement.style.fontSize = "1.5em";
+    // scoreElement.style.textAlign = "center";
+
+    const timerElement = document.getElementById("timer").parentElement;
+    timerElement.style.fontSize = "1.5em";
 
     // Center the stats div content on game over
-    document.getElementById("stats").style.justifyContent = "center";
+    document.getElementById("stats").style.justifyContent = "space-between";
+  }
+
+  // check whether position is clear for a new obstacle to spawn (needed to enable variable spawn rate)
+
+  isPositionClear(newLeft, newWidth) {
+    for (let obstacle of this.obstacles) {
+      // iuncrease padding to avoid clusters
+      const padding = 80;
+      if (
+        newLeft < obstacle.left + obstacle.width + padding &&
+        newLeft + newWidth + padding > obstacle.left
+      ) {
+        return false; // spawn position is blocked
+      }
+    }
+    return true; // spawn position is clear
+  }
+
+  // timer logic
+
+  updateTimerDisplay() {
+    if (this.gameStartTime) {
+      const currentTime = Date.now();
+      const elapsedSeconds = Math.floor(
+        (currentTime - this.gameStartTime) / 1000
+      );
+      const minutes = Math.floor(elapsedSeconds / 60);
+      const seconds = elapsedSeconds % 60;
+
+      const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds
+        .toString()
+        .padStart(2, "0")}`;
+      this.timerElement.textContent = formattedTime;
+    }
   }
 }
